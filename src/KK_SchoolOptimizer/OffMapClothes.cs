@@ -49,6 +49,7 @@ namespace Joojkk.SchoolOptimizer
         private static int _sinceCleanup, _lastMap = -1;
         private static float _next;
 
+        // Debug: totals since the game started.
         public static int StrippedTotal, DressedTotal, DressedUrgent, RebuiltByGame, KeptReleased, WaitedHidden, StuckRecovered;
         public static float DressSecondsMax, DressSecondsSum, UrgentSecondsMax;
 

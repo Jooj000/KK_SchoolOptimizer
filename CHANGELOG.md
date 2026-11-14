@@ -1,5 +1,8 @@
 # School Optimizer changelog
 
+## 1.7.2 (not released yet)
+- The experimental rebuild skip checks every accessory, hidden ones included, before it skips a rebuild: a hidden accessory bound to nothing showed up later at the middle of the map.
+
 ## 1.7.1 (2026-11-08)
 - A student whose clothes were left in the shower or toilet state after she moved on (a towel in the cafeteria) is dressed again.
 - A clothes release or rebuild that got stuck (its coroutine stopped) no longer keeps a student hidden: after 20 s, or at once when she is needed on the player's map, the run is dropped and she is dressed in that frame.

@@ -63,6 +63,7 @@ namespace Joojkk.SchoolOptimizer
         public static string Status { get { return _status; } }
 
         /// <summary>The plugin settings row: a button that opens the window (and scans the first time).</summary>
+        /// <summary>Debug tools press the button in its next draw (when its mouse click cannot reach the game).</summary>
         public static bool PressNext;
 
         public static void DrawButton(ConfigEntryBase entry)
@@ -71,6 +72,7 @@ namespace Joojkk.SchoolOptimizer
             if (PressNext && Event.current.type == EventType.Repaint) { PressNext = false; clicked = true; }
             if (Event.current.type == EventType.Repaint)
             {
+                // Where the button is on screen, for debug tools to click it like a player.
                 var r = GUILayoutUtility.GetLastRect();
                 ButtonAt = GUIUtility.GUIToScreenPoint(r.center);
                 ButtonFrame = Time.frameCount;

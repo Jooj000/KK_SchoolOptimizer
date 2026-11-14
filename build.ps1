@@ -1,6 +1,7 @@
 ﻿# Builds KK_CampusLife.dll, KK_HMaleWardrobe.dll and KK_SchoolOptimizer.dll with the Roslyn csc from VS 2019.
 # Usage:  powershell -ExecutionPolicy Bypass -File build.ps1 [-Install]
 #   -Install  copies the DLLs into the game's BepInEx\plugins\Joojkk\ folder (each mod is one DLL).
+#   -Dev      defines DEBUG_TOOLS (local debug code, not in the repository).
 #   -Only     builds just that plugin (KK_CampusLife, KK_HMaleWardrobe, KK_SchoolOptimizer or KK_CampusSaves). A plugin
 #             whose src folder is missing (a single-mod repository) is skipped.
 #   -Game     the Koikatsu folder (with Koikatu_Data and BepInEx);  -Csc  the Roslyn csc.exe to use.

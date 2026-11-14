@@ -303,6 +303,7 @@ namespace Joojkk.SchoolOptimizer
             return string.Join(", ", parts.ToArray());
         }
 
+        /// <summary>Debug.</summary>
         public static string Summary()
         {
             return "checked " + Checked + ", fixed " + Fixed + " (colors " + Colors + ", missing " + Missing + ", strands " + Strands + ", parked while shown " + ParkedShown + ")";

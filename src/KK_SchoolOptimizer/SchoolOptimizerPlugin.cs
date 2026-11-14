@@ -539,6 +539,8 @@ namespace Joojkk.SchoolOptimizer
     internal static class ReloadSkip
     {
         public static int SkippedRebuilds, SkippedOutfits;
+        /// <summary>Why a first-activation rebuild was not skipped, counted per reason (read by diagnostics).</summary>
+        public static readonly Dictionary<string, int> NotSkipped = new Dictionary<string, int>();
         private static MethodInfo _isReplace;
         private static ChaControl _justSkipped;
 
@@ -642,20 +644,50 @@ namespace Joojkk.SchoolOptimizer
             _justSkipped = null;
             try
             {
-                if (SchoolOptimizerPlugin.Enabled.Value && SchoolOptimizerPlugin.SkipDuplicateReloads.Value && cha != null && cha.loadEnd
+                if (SchoolOptimizerPlugin.Enabled.Value && SchoolOptimizerPlugin.SkipDuplicateReloads.Value && cha != null
                     && !noClothes && !noHead && !noHair && !noBody)
                 {
                     var owner = Owner(cha);
-                    if (owner != null && owner.chaCtrl == cha && !(bool)_isReplace.Invoke(owner, null))
+                    var why = !cha.loadEnd ? "still loading" : owner == null ? "no owner" : owner.chaCtrl != cha ? "other model"
+                        : (bool)_isReplace.Invoke(owner, null) ? "swapped girl" : Unsettled(cha);
+                    if (why == null)
                     {
                         SkippedRebuilds++;
                         _justSkipped = cha;
                         return true;
                     }
+                    int n;
+                    NotSkipped.TryGetValue(why, out n);
+                    NotSkipped[why] = n + 1;
                 }
             }
             catch (Exception e) { SchoolOptimizerPlugin.Log.LogDebug("Rebuild skip: " + e.Message); _justSkipped = null; }
             return cha.Reload(noClothes, noHead, noHair, noBody);
+        }
+
+        /// <summary>
+        /// Pieces the rebuild would still put right: a skinned accessory still bound to its own copy of the skeleton (drawn
+        /// at the map's origin instead of on her), or two pieces of the same name on one parent (a doubled hair or outfit
+        /// part). Null when there is none and the rebuild can be skipped.
+        /// </summary>
+        private static string Unsettled(ChaControl cha)
+        {
+            var seen = new HashSet<string>();
+            foreach (var t in cha.GetComponentsInChildren<Transform>(true))
+            {
+                var n = t.name;
+                if (!n.StartsWith("ct_") && !n.StartsWith("ca_slot")) continue;
+                if (t.gameObject.activeSelf && !seen.Add((t.parent != null ? t.parent.GetInstanceID() : 0) + "/" + n)) return "doubled piece";
+                // Hidden accessories count too: the period's outfit can show them later, still bound to nothing.
+                if (!n.StartsWith("ca_slot")) continue;
+                foreach (var r in t.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                {
+                    if (r.rootBone == null || r.bones == null) return "unbound accessory";
+                    if (r.rootBone.IsChildOf(t)) return "unbound accessory";
+                    foreach (var bone in r.bones) if (bone == null) return "unbound accessory";
+                }
+            }
+            return null;
         }
 
         /// <summary>Stands in for <c>ChangeNowCoordinate()</c> right after it.</summary>
@@ -902,9 +934,9 @@ namespace Joojkk.SchoolOptimizer
         public static int LeftHalfDressed;
 
         /// <summary>
-        /// A change of clothes that waited in the queue used to be applied after she had already left the locker room:
-        /// the game never put her clothes back (it does that only when her next action starts), so she walked around
-        /// with pieces missing, and the game saw it (her clothes state), until the period ended. Whoever still has the
+        /// A change of clothes that waited in the queue can be applied after she has already left the locker room:
+        /// the game never puts her clothes back (it does that only when her next action starts), so she would walk around
+        /// with pieces missing until the period ends. Whoever still has the
         /// changing-room state away from a changing point gets it ended, as the game would.
         /// </summary>
         public static void Sweep()

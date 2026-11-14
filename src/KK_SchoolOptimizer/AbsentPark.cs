@@ -14,8 +14,8 @@ namespace Joojkk.SchoolOptimizer
     /// <summary>
     /// Students who did not come to school today (the day's draw gave them no NPC) keep only their game data in memory.
     /// <list type="bullet">
-    /// <item>Measured: 30 absent girls held 282 MB of appearance data inside their cards (MaterialEditor textures, skin
-    /// and clothes overlays as bytes), with no body loaded.</item>
+    /// <item>Absent girls keep hundreds of MB of appearance data inside their cards (MaterialEditor textures, skin and
+    /// clothes overlays as bytes), with no body loaded.</item>
     /// <item>After the day's draw, each absent girl's large mod entries go to a file in BepInEx\cache\joojkk_absent
     /// (written, read back and checked first) and leave her card in memory. Game data stays: KK_Pregnancy, LewdCrestX,
     /// ours, and anything small. Campus Life keeps its data in the save, not on the card.</item>
@@ -42,7 +42,9 @@ namespace Joojkk.SchoolOptimizer
         private static string _dir;
         private static bool _inside;
 
+        /// <summary>Set by debug tools while it only looks at the data (no restore).</summary>
         public static bool Suspend;
+        /// <summary>Set by debug tools to compare with parking off (the config file is not written).</summary>
         public static bool TestOff;
         public static int Restores;
         /// <summary>Girls whose data came back for something other than a save: she came to school.</summary>
@@ -247,6 +249,7 @@ namespace Joojkk.SchoolOptimizer
             foreach (var f in Recs.Keys.ToList()) Restore(f, "all");
         }
 
+        /// <summary>Debug: "parked N KB" or "".</summary>
         public static string Describe(ChaFile file)
         {
             Rec r;

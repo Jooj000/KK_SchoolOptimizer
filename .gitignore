@@ -1,4 +1,4 @@
-# Build output and local research (decompiled game/plugin code is never published)
+# Build output and local notes
 dist/
 research/
 obj/
@@ -6,15 +6,11 @@ bin/
 *.user
 *.suo
 .vs/
-# Local helper for session transcripts
-tools/extract_commands.py
-tools/last_run_*.txt
-tools/iconpreview/iconpreview.png
-
 # Python bytecode
 __pycache__/
 *.pyc
 
+# Local tools
 tools/*
 !tools/package_release.ps1
 src/KK_CampusLife/Dev/
