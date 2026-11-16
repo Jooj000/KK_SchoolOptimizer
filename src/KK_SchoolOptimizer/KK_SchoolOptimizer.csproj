@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Shared settings and references: Directory.Build.props at the repository root. -->
+  <PropertyGroup>
+    <AssemblyName>KK_SchoolOptimizer</AssemblyName>
+    <RootNamespace>Joojkk.SchoolOptimizer</RootNamespace>
+  </PropertyGroup>
+</Project>

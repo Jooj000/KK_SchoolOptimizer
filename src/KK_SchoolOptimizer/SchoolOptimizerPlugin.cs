@@ -132,7 +132,7 @@ namespace Joojkk.SchoolOptimizer
                 null, new ConfigurationManagerAttributes { Order = 2 }));
             ParkAbsent = Config.Bind(s, "Absent students keep only game data", true, new ConfigDescription(
                 "Students who did not come to school today have no body, but their cards still held every texture of their " +
-                "look in memory (MaterialEditor, skin and clothes overlays: 282 MB for 30 absent girls in one test). For the day " +
+                "look in memory (MaterialEditor, skin and clothes overlays). For the day " +
                 "that appearance data is moved to a file in BepInEx/cache/joojkk_absent and comes back by itself the moment " +
                 "anything needs it (her body being built, the game saving). Game data such as Pregnancy and LewdCrestX stays.",
                 null, new ConfigurationManagerAttributes { Order = 1 }));

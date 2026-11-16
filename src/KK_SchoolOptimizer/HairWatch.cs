@@ -121,7 +121,7 @@ namespace Joojkk.SchoolOptimizer
                     }
                     else rends = obj.GetComponentsInChildren<Renderer>(true);
                     // A card can wear no hair of the game's own (the "none" piece, p_dummy) and all of it as hair
-                    // accessories (Nonaka, Ozen, Yumeria): an empty piece then is the card, not a fault.
+                    // accessories: an empty piece then is the card, not a fault.
                     if (rends.Length == 0 && Dummy(cha, i)) continue;
                     if (rends.Length == 0 && fresh("empty" + i)) { s.Tried.Add("empty" + i); problems.Add("hair slot " + i + " (" + obj.name + ") has no renderer"); Missing++; rebuild = rebuildHair = true; }
                     foreach (var r in rends)

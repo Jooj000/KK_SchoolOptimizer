@@ -63,6 +63,20 @@ It needs BepInEx and KKAPI, which the HF Patch already has. To update, drop the 
 
 See [CHANGELOG.md](CHANGELOG.md).
 
+## Building from source
+
+Requires the [.NET SDK](https://dotnet.microsoft.com/download) (any recent version) or Visual Studio 2019 or newer. No game files are needed: the game, BepInEx and KKAPI libraries come from the IllusionMods NuGet feed (see `nuget.config`). In this mod's own repository:
+
+```
+dotnet build -c Release
+```
+
+The DLL lands in `dist\`. Add `-p:KoikatsuDir="C:\path\to\Koikatsu"` to copy it into the game's `BepInEx\plugins\Joojkk\`, or open `KK_SchoolOptimizer.sln` in Visual Studio.
+
+## Use of AI
+
+AI was used only to help debug.
+
 ## Credits
 
 - Made by **Joojkk**.

@@ -1,0 +1,45 @@
+<Project>
+  <!-- Shared settings for every plugin project under src\. Build with `dotnet build -c Release` (or open the .sln in
+       Visual Studio); the game libraries come from the IllusionMods NuGet feed (nuget.config), so no game folder is
+       needed. Pass -p:KoikatsuDir="C:\Games\Koikatsu" to copy the built DLL into BepInEx\plugins\Joojkk\. -->
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <OutputType>Library</OutputType>
+    <OutputPath>$(MSBuildThisFileDirectory)dist\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Deterministic>true</Deterministic>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <NoWarn>$(NoWarn);1591;0649;0169;0414;0618</NoWarn>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- -p:Dev=true builds the local test harness (src\KK_CampusLife\Dev, not part of the public source). -->
+  <PropertyGroup Condition="'$(Dev)' == 'true'">
+    <DefineConstants>$(DefineConstants);DEBUG_TOOLS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Dev)' != 'true'">
+    <Compile Remove="Dev\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.Koikatu.Assembly-CSharp" Version="2019.4.27.4" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.Koikatu.Assembly-CSharp-firstpass" Version="2019.4.27.4" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.Koikatu.UnityEngine" Version="5.6.2.4" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.Koikatu.UnityEngine.UI" Version="5.6.2.4" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.Koikatu.TextMeshPro" Version="2019.4.27.4" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.BepInEx" Version="5.4.22" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionLibs.BepInEx.Harmony" Version="2.9.0" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="IllusionModdingAPI.KKAPI" Version="1.45.1" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="ExtensibleSaveFormat.Koikatu" Version="21.1.2" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Sideloader.Koikatu" Version="21.1.2" IncludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="CopyToGame" AfterTargets="Build" Condition="'$(KoikatsuDir)' != ''">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(KoikatsuDir)\BepInEx\plugins\Joojkk\" />
+  </Target>
+</Project>
